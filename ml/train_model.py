@@ -16,7 +16,7 @@ df = pd.DataFrame({
     "query": [
 
         # --- SIMPLE / AUTOMATED ---
-        "hello", "hi", "hey", "yo", "good morning", "good evening",
+        "yoo","hello", "hi", "hey", "yo", "good morning", "good evening",
         "bye", "see you", "thanks", "thank you", "ok", "cool",
         "what's up", "sup", "hello there",
 
@@ -72,7 +72,7 @@ df = pd.DataFrame({
 
     "target": [
         # simple = 0
-        0,0,0,0,0,0,
+        0,0,0,0,0,0,0,
         0,0,0,0,0,0,
         0,0,0,
 
@@ -100,7 +100,7 @@ y = df["target"]
 # MODEL
 # -------------------------------
 pipeline = Pipeline([
-    ("vectorizer", CountVectorizer()),
+    ("vectorizer", CountVectorizer(1,2)),
     ("model", LogisticRegression())
 ])
 
