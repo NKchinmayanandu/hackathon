@@ -1,19 +1,27 @@
-import pickle
-import pandas as pd
-with open("ml/model.pkl", "rb") as f:
-    model = pickle.load(f)
-
-
 def predict_rule(data: dict):
     query = data.get("query", "")
 
-    if "hello" in query.lower():
-        return {"mode": "rule", "result": "Hi 👋"}
-    elif "bye" in query.lower():
-        return {"mode": "rule", "result": "Goodbye 👋"}
-    
-    return {
+    q = query.lower()
+
+    q = query.lower()
+
+# Greeting
+    if any(word in q for word in ["hello", "hi", "hey"]):
+        return {
         "mode": "rule",
-        "result": "Default response"
+        "result": "Greeting detected → automated response sent"
     }
 
+# Exit
+    elif any(word in q for word in ["bye", "thanks", "thank you"]):
+        return {
+        "mode": "rule",
+        "result": "Session completed → response delivered"
+    }
+
+# Help
+    elif "help" in q:
+        return {
+        "mode": "rule",
+        "result": "User requested assistance → guidance provided"
+    }

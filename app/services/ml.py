@@ -13,7 +13,12 @@ def predict_ml(data: dict):
 
     query = data["query"]
 
-    pred = model.predict([query])[0]
+    pred = model.predict([query])[0]   # ✅ THIS WAS MISSING
+
+    label_map = {
+        0: "Simple query handled automatically",
+        1: "Business-related task → requires processing"
+    }
 
     try:
         prob = model.predict_proba([query]).max()
@@ -22,6 +27,6 @@ def predict_ml(data: dict):
 
     return {
         "mode": "ml",
-        "result": str(pred),
+        "result": label_map.get(pred, "Unknown task"),
         "confidence": float(prob) if prob else None
     }

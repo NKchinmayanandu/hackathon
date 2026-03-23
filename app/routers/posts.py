@@ -1,3 +1,4 @@
+from app.services.task_logger import log_task
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from app.database import get_db
@@ -15,9 +16,17 @@ logger = logging.getLogger(__name__)
 def predict(data: PredictRequest):
     if data.query:
         if len(data.query.split()) > 3:
-            return predict_ml({"query": data.query})
+            result = predict_ml({"query": data.query})
         else:
-            return predict_rule({"query": data.query})
+            result = predict_rule({"query": data.query})
+
+        log = log_task(data.query, result)
+
+        return {
+            "result": result,
+            "log": log
+        }
+
     return {"error": "Invalid input"}
 
 
@@ -72,7 +81,5 @@ def delete_post(post_id: int, db: Session = Depends(get_db)):
 def get_posts_by_user(user_id: int, db: Session = Depends(get_db)):
     return db.query(Post).filter(Post.owner_id == user_id).all()
 
-@router.post("/predict")
-def predict(data: PredictRequest):
-    return predict_ml({"query": data.query})
+
 

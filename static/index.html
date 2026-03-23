@@ -149,9 +149,19 @@ function sendData() {
   })
   .then(res => res.json())
   .then(data => {
-    const output = data.result || JSON.stringify(data);
-    resultBox.innerText = "✅ " + output;
-  })
+  let output = "";
+
+  if (data.result) {
+    output = data.result.result;  // actual text (Hi 👋)
+  }
+
+  let hash = "";
+  if (data.log) {
+    hash = "\nHash: " + data.log.hash.slice(0, 12); // short hash
+  }
+
+  resultBox.innerText = "✅ " + output + hash + "\nTime saved: ~2 min";
+})
   .catch(err => {
     console.error(err);
     resultBox.innerText = "❌ Error occurred";

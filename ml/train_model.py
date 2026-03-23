@@ -14,13 +14,83 @@ print("🚀 TRAINING STARTED")
 # -------------------------------
 df = pd.DataFrame({
     "query": [
-        "hello",
-        "hi",
+
+        # --- SIMPLE / AUTOMATED ---
+        "hello", "hi", "hey", "yo", "good morning", "good evening",
+        "bye", "see you", "thanks", "thank you", "ok", "cool",
+        "what's up", "sup", "hello there",
+
+        # --- BUSINESS / ML TASKS ---
         "predict sales",
-        "analyze data",
-        "bye"
+        "predict revenue",
+        "forecast next month sales",
+        "analyze business data",
+        "generate report",
+        "monthly sales prediction",
+        "next quarter revenue forecast",
+        "analyze customer trends",
+        "build report for last month",
+        "data analysis for growth",
+        "predict demand",
+        "sales trend analysis",
+
+        # --- REAL HUMAN STYLE (IMPORTANT) ---
+        "i need sales prediction",
+        "can you analyze my data",
+        "give me next month forecast",
+        "bro predict revenue",
+        "yo analyze business data",
+        "please generate report",
+        "i want sales forecast",
+        "help me with analysis",
+        "need prediction for next month",
+        "check trends in my data",
+
+        # --- NOISY / SLANG INPUT ---
+        "yoo bro need next month sales prediction",
+        "plz analyze this data",
+        "hey can u predict revenue",
+        "bro i need report asap",
+        "yo give forecast",
+        "need data insights fast",
+        "pls do analysis",
+        "can u check sales trend",
+
+        # --- EDGE CASES ---
+        "random text",
+        "just testing",
+        "nothing important",
+        "tell me something",
+        "i am bored",
+
+        # --- MIXED ---
+        "hi can you predict sales",
+        "hello i need report",
+        "yo analyze this",
+        "thanks but also forecast revenue",
     ],
-    "target": [0, 0, 1, 1, 0]
+
+    "target": [
+        # simple = 0
+        0,0,0,0,0,0,
+        0,0,0,0,0,0,
+        0,0,0,
+
+        # business = 1
+        1,1,1,1,1,1,1,1,1,1,1,1,
+
+        # human style = 1
+        1,1,1,1,1,1,1,1,1,1,
+
+        # noisy = 1
+        1,1,1,1,1,1,1,1,
+
+        # edge = 0
+        0,0,0,0,0,
+
+        # mixed = 1
+        1,1,1,1
+    ]
 })
 
 X = df["query"]
