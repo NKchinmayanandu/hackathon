@@ -140,12 +140,12 @@ function sendData() {
 
   resultBox.innerHTML = '<div class="spinner"></div> Processing...';
 
-  fetch("http://127.0.0.1:8000/predict", {
+  fetch("http://127.0.0.1:8000/posts/predict", {
     method: "POST",
     headers: {
       "Content-Type": "application/json"
     },
-    body: JSON.stringify({ data: input })
+    body: JSON.stringify({ query: input })
   })
   .then(res => res.json())
   .then(data => {

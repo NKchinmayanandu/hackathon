@@ -1,5 +1,14 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 from typing import Optional, List
+from pydantic import Field
+# inside schemas (same file is fine)
+
+from pydantic import BaseModel, Field
+from typing import Optional, List, Dict, Any
+
+class PredictRequest(BaseModel):
+    query: Optional[str] = None
+    data: Optional[Dict[str, Any]] = None
 
 # ── User Schemas ──────────────────────────────
 class UserCreate(BaseModel):
@@ -8,8 +17,8 @@ class UserCreate(BaseModel):
 
 class UserResponse(UserCreate):
     id: int
-    posts: List["PostResponse"] = []
 
+    posts: List["PostResponse"] = Field(default_factory=list)
     class Config:
         from_attributes = True
 

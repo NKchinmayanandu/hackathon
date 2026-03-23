@@ -1,8 +1,8 @@
 import pickle
 import pandas as pd
-
 with open("ml/model.pkl", "rb") as f:
     model = pickle.load(f)
+
 
 def predict_rule(data: dict):
     query = data.get("query", "")

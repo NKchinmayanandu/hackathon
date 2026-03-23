@@ -1,14 +1,16 @@
+import os
+print("CURRENT DIR:", os.getcwd())
 import pandas as pd
-import numpy as np
 import pickle
-from sklearn.model_selection import train_test_split, cross_val_score
+
 from sklearn.pipeline import Pipeline
 from sklearn.linear_model import LogisticRegression
-from sklearn.metrics import confusion_matrix, classification_report
 from sklearn.feature_extraction.text import CountVectorizer
 
+print("🚀 TRAINING STARTED")
+
 # -------------------------------
-# LOAD DATA (replace this)
+# DATA
 # -------------------------------
 df = pd.DataFrame({
     "query": [
@@ -25,24 +27,26 @@ X = df["query"]
 y = df["target"]
 
 # -------------------------------
-# PIPELINE
+# MODEL
 # -------------------------------
 pipeline = Pipeline([
     ("vectorizer", CountVectorizer()),
     ("model", LogisticRegression())
 ])
 
-# -------------------------------
-# TRAIN TEST SPLIT
-# -------------------------------
-X_train, X_test, y_train, y_test = train_test_split(
-    X, y, test_size=0.2, random_state=42
-)
+pipeline.fit(X, y)
 
 # -------------------------------
-# TRAIN
+# SAVE
 # -------------------------------
-pipeline.fit(X_train, y_train)
+os.makedirs("ml", exist_ok=True)
 
-# -------------------------------
-# EVA
+base_dir = os.path.dirname(__file__)
+model_path = os.path.join(base_dir, "model.pkl")
+
+with open(model_path, "wb") as f:
+    pickle.dump(pipeline, f)
+
+print("Saved at:", model_path)
+
+print("✅ model.pkl CREATED")
