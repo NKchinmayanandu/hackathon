@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <title>Hackathon App</title>
+
+  <style>
+  body {
+    font-family: 'Segoe UI', sans-serif;
+    background: linear-gradient(135deg, #0f172a, #1e293b);
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+  }
+
+  .container {
+    background: rgba(30, 41, 59, 0.85);
+    padding: 35px;
+    border-radius: 16px;
+    text-align: center;
+    width: 320px;
+    box-shadow: 0 15px 40px rgba(0,0,0,0.5);
+    backdrop-filter: blur(12px);
+  }
+
+  h2 {
+    margin-bottom: 20px;
+    font-weight: 600;
+  }
+
+  input {
+    padding: 12px;
+    width: 85%;
+    border-radius: 8px;
+    border: none;
+    outline: none;
+    margin-bottom: 15px;
+    font-size: 14px;
+    background: #e2e8f0;
+  }
+
+  .btn-group {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+  }
+
+  button {
+    padding: 10px 20px;
+    background: linear-gradient(135deg, #38bdf8, #0ea5e9);
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    color: white;
+    font-weight: 500;
+    transition: all 0.2s ease;
+  }
+
+  button:hover {
+    transform: scale(1.05);
+    opacity: 0.9;
+  }
+
+  button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  #result {
+    margin-top: 20px;
+    background: #020617;
+    padding: 12px;
+    border-radius: 8px;
+    font-size: 14px;
+    min-height: 40px;
+    color: #38bdf8;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .spinner {
+    border: 3px solid #1e293b;
+    border-top: 3px solid #38bdf8;
+    border-radius: 50%;
+    width: 16px;
+    height: 16px;
+    animation: spin 1s linear infinite;
+    margin-right: 8px;
+  }
+
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+</style>
+
+</head>
+<body>
+
+<div class="container">
+  <h2>🚀 Hackathon App</h2>
+
+  <input type="text" id="inputBox" placeholder="Enter something">
+
+  <div class="btn-group">
+    <button id="submitBtn" onclick="sendData()">Submit</button>
+    <button onclick="clearInput()">Clear</button>
+  </div>
+
+  <p id="result">Result will appear here...</p>
+</div>
+
+<script>
+const inputBox = document.getElementById("inputBox");
+const resultBox = document.getElementById("result");
+const button = document.getElementById("submitBtn");
+
+// 🔥 Enter key support
+inputBox.addEventListener("keypress", function(e) {
+  if (e.key === "Enter") {
+    sendData();
+  }
+});
+
+function sendData() {
+  const input = inputBox.value;
+
+  if (!input) {
+    resultBox.innerText = "⚠️ Please enter something";
+    return;
+  }
+
+  // disable button
+  button.disabled = true;
+  button.innerText = "Processing...";
+
+  resultBox.innerHTML = '<div class="spinner"></div> Processing...';
+
+  fetch("http://127.0.0.1:8000/predict", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({ data: input })
+  })
+  .then(res => res.json())
+  .then(data => {
+    const output = data.result || JSON.stringify(data);
+    resultBox.innerText = "✅ " + output;
+  })
+  .catch(err => {
+    console.error(err);
+    resultBox.innerText = "❌ Error occurred";
+  })
+  .finally(() => {
+    button.disabled = false;
+    button.innerText = "Submit";
+  });
+}
+
+function clearInput() {
+  inputBox.value = "";
+  resultBox.innerText = "Cleared";
+}
+</script>
+
+</body>
+</html>
